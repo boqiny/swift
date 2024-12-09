@@ -91,6 +91,8 @@ logger = get_logger()
 
 
 class DatasetName:
+    # logic
+    logic_reasoning_dataset = 'logic_reasoning_dataset'
     # general
     ms_bench = 'ms-bench'  # used for mixed training
     alpaca_en = 'alpaca-en'
@@ -310,6 +312,11 @@ def register_local_dataset(
     register_dataset(
         dataset_name, get_function=get_local_dataset, split=dataset_path, exist_ok=True, is_local=True, **kwargs)
 
+register_local_dataset(
+    DatasetName.logic_reasoning_dataset,
+    ['/scratch/bcjw/boqiny2/ms-swift/logic_reasoning_dataset'],
+    base_dir='/scratch/bcjw/boqiny2/ms-swift'
+)
 
 def register_dataset_info(dataset_name: str, d_info: Dict[str, Any], **kwargs) -> None:
     if 'columns' in d_info:
@@ -500,6 +507,15 @@ def _concat_inst_inp_alpaca_zh(inst: str, inp: str) -> str:
         inp = inp[3:]
     return f'{inst}\n{inp}'
 
+register_dataset(
+    DatasetName.logic_reasoning_dataset,
+    '/scratch/bcjw/boqiny2/ms-swift/logic_reasoning_dataset',  # Update this path to where you saved the dataset
+    None,
+    None,  # No preprocessing needed since data is already in correct format
+    get_dataset_from_repo,
+    tags=['chat', 'logic', 'reasoning'],
+    split=['train']  # Adjust splits if you have validation/test sets
+)
 
 register_dataset(
     DatasetName.alpaca_zh,
