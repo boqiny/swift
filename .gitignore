@@ -146,3 +146,4 @@ ast_index_file.py
 
 #json
 *.json
+cache/
